@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,19 @@ public class AnnonceServiceImplement implements AnnonceServiceInterface {
 
 
     private final AnnonceRepository annonceRepository;
+
+    @PostConstruct
+    public void initData() {
+        if (annonceRepository.count() == 0) { // Vérifie si la BD est vide
+            annonceRepository.saveAll(List.of(
+                    new Annonce("clio 3", "clio 3 très propre", "3 rue des clio", "clio3@gmail.com", LocalDateTime.now()),
+                    new Annonce("clio 4", "clio 4 très propre", "4 rue des clio", "clio4@gmail.com", LocalDateTime.now()),
+                    new Annonce("pc portable", "pc portable en bonne état", "9 rue des pc portable", "pcPortable@gmail.com", LocalDateTime.now()),
+                    new Annonce("iphone 15 pro max", "iphone 15 pro max en très bonne état", "15 rue des pro max", "iphoneProMax@gmail.com", LocalDateTime.now()),
+                    new Annonce("samsung s24", "samsung s24", "24 rue des samsung", "samsung@gmail.com", LocalDateTime.now())
+            ));
+        }
+    }
 
     @Autowired
     public AnnonceServiceImplement(AnnonceRepository annonceRepository) {
