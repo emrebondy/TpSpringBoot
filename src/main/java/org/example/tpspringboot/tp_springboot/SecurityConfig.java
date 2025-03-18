@@ -18,7 +18,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("je suis bien appellé par delete");
         auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password("{noop}admin")  // No password encoding
@@ -38,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()   // pour activer le cors
                 .csrf().disable() // Disable CSRF if needed
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/**").permitAll()  // Allow POST for all

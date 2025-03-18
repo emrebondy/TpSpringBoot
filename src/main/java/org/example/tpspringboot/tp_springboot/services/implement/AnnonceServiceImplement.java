@@ -41,14 +41,12 @@ public class AnnonceServiceImplement implements AnnonceServiceInterface {
 
     @Override
     public Annonce saveAnnonce(Annonce annonce) {
-        System.out.println("dans creer");
         annonce.setDate(LocalDateTime.now());
         return annonceRepository.save(annonce);
     }
 
     @Override
     public List<Annonce> getAllAnnonces() {
-        System.out.println("getAllAnnonces je suis là..........................");
         return annonceRepository.findAll();
     }
 

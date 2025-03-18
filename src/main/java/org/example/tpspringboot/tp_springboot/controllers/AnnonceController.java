@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/annonces")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AnnonceController {
 
     private final AnnonceServiceInterface annonceService;
@@ -25,15 +26,12 @@ public class AnnonceController {
 
     @GetMapping
     public ResponseEntity<List<Annonce>> getAllAnnonces() {
-        System.out.println("route get appelé");
         List<Annonce> annonces = annonceService.getAllAnnonces();
         return ResponseEntity.ok(annonces);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Annonce> getAnnonceById(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Current roles: " + authentication.getAuthorities());
         return annonceService.getAnnonceById(id)
                 .map(ResponseEntity::ok)
 
@@ -42,7 +40,6 @@ public class AnnonceController {
 
     @PostMapping
     public ResponseEntity<Annonce> createAnnonce(@RequestBody Annonce annonce) {
-        System.out.println("voici l'annonce " + annonce);
         Annonce savedAnnonce = annonceService.saveAnnonce(annonce);
         return ResponseEntity.ok(savedAnnonce);
     }
@@ -56,10 +53,6 @@ public class AnnonceController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAnnonce(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Utilisateur : " + authentication.getName());
-        System.out.println("Roles : " + authentication.getAuthorities());
-        System.out.println("dans delete");
         annonceService.deleteAnnonce(id);
         return ResponseEntity.noContent().build();
     }
